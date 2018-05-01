@@ -22,9 +22,7 @@ public class LargePit extends Pit{
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
-		//made the background black just to give it some style
-		setBackground(Color.BLACK);
-		g2.setColor(Color.WHITE);
+		g2.setColor(Color.BLACK);
 		Ellipse2D pit = new Ellipse2D.Double(10, 5, 80, 275);
 		g2.draw(pit);
 	}

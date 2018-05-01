@@ -1,9 +1,9 @@
-public class Player {
+public class player {
 	private String name;
 	private int score;
 	
 	//constructs player
-	public Player(String name, int score) {
+	public player(String name, int score) {
 		this.name = name;
 		this.score = score;	
 	}
