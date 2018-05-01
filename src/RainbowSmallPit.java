@@ -3,16 +3,17 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
+import java.util.Random;
 
-public class SmallPit extends Pit{
-	
-	private int stoneCount;
+public class RainbowSmallPit extends Pit implements PitStyle{
+
+private int stoneCount;
 	
 	/**
 	 * Constructs a small pit
 	 * @param n the number of stones each small pit begins with
 	 */
-	public SmallPit(int n){
+	public RainbowSmallPit(int n){
 		stoneCount = n;
 		setPreferredSize(new Dimension(140, 140));
 	}
@@ -21,7 +22,10 @@ public class SmallPit extends Pit{
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 		Ellipse2D pit = new Ellipse2D.Double(10, 10, 120, 120);
-		g2.setColor(Color.BLACK);
+		//made the background black just to give it some style
+		Color[] colors = {Color.BLACK, Color.BLUE, Color.RED,Color.YELLOW, Color.YELLOW, Color.GREEN, Color.PINK};
+		Random rand = new Random();
+		g2.setColor( colors[rand.nextInt(7)]);
 		g2.draw(pit);
 		
 		int x = 45;
@@ -36,5 +40,4 @@ public class SmallPit extends Pit{
 			}
 		}
 	}
-	
 }
