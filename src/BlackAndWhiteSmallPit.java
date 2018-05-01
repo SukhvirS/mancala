@@ -4,7 +4,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
 
-public class SmallPit extends Pit{
+public class BlackAndWhiteSmallPit extends Pit implements PitStyle{
 	
 	private int stoneCount;
 	
@@ -12,7 +12,7 @@ public class SmallPit extends Pit{
 	 * Constructs a small pit
 	 * @param n the number of stones each small pit begins with
 	 */
-	public SmallPit(int n){
+	public BlackAndWhiteSmallPit(int n){
 		stoneCount = n;
 		setPreferredSize(new Dimension(140, 140));
 	}
@@ -21,7 +21,9 @@ public class SmallPit extends Pit{
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 		Ellipse2D pit = new Ellipse2D.Double(10, 10, 120, 120);
-		g2.setColor(Color.BLACK);
+		//made the background black just to give it some style
+		setBackground(Color.BLACK);
+		g2.setColor(Color.WHITE);
 		g2.draw(pit);
 		
 		int x = 45;
