@@ -4,26 +4,23 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
 
-public class BlackAndWhiteSmallPit extends Pit implements PitStyle{
-	
+public class SmallPit extends Pit{
+
 	private int stoneCount;
+	private Color color;
 	
-	/**
-	 * Constructs a small pit
-	 * @param n the number of stones each small pit begins with
-	 */
-	public BlackAndWhiteSmallPit(int n){
+	public SmallPit(int n, Color c){
 		stoneCount = n;
+		color = c;
 		setPreferredSize(new Dimension(140, 140));
 	}
-
+	
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 		Ellipse2D pit = new Ellipse2D.Double(10, 10, 120, 120);
-		//made the background black just to give it some style
-		setBackground(Color.BLACK);
-		g2.setColor(Color.WHITE);
+		
+		g2.setColor(color);
 		g2.draw(pit);
 		
 		int x = 45;
