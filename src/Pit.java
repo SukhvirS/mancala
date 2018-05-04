@@ -1,11 +1,3 @@
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class Pit extends JPanel{
@@ -30,4 +22,5 @@ public class Pit extends JPanel{
 		}
 		return false;
 	}
+
 }

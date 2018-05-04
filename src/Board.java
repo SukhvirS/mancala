@@ -5,6 +5,9 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
@@ -13,27 +16,92 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
-public class Board extends JFrame {
+public class Board extends JFrame implements ChangeListener{
 
 	private Model model;
-	private ArrayList<Pit> playerA_row;
-	private ArrayList<Pit> playerB_row;
-	private Pit playerA_mancala;
-	private Pit playerB_mancala;
+	private ArrayList<Pit> smallPits;
+	private ArrayList<Pit> largePits;
 	private Color color;
 	boolean stonesNumSelected;
 	boolean colorSelected;
 	
-	public Board(Model m, Color c){
+	protected Board(Model m){
 		model = m;
-		color = c;
+
+		smallPits = new ArrayList<Pit>(12);
+		largePits = new ArrayList<Pit>(2);
 		
 		stonesNumSelected = false;
 		colorSelected = false;
 		
 		makeStartScreen();
 		drawBoard();
+		
+		MouseListener listener = new MouseListener(){
+			public void mouseClicked(MouseEvent e) {
+			}
+
+			public void mousePressed(MouseEvent e) {
+				Point2D point = new Point2D.Double(e.getX(), e.getY());
+				int i = 0;
+				//top half of small pits
+				if(point.getY() <= 175){
+					if(point.getX()>100 && point.getX()<233){
+						i = 0;
+					}
+					else if(point.getX()>233 && point.getX()<366){
+						i = 1;
+					}
+					else if(point.getX()>366 && point.getX()<499){
+						i = 2;
+					}
+					else if(point.getX()>499 && point.getX()<632){
+						i = 3;
+					}
+					else if(point.getX()>632 && point.getX()<765){
+						i = 4;
+					}
+					else if(point.getX()>765 && point.getX()<898){
+						i = 5;
+					}
+				}
+				//bottom half of small pits
+				if(point.getY() > 175){
+					if(point.getX()>100 && point.getX()<233){
+						i = 6;
+					}
+					else if(point.getX()>233 && point.getX()<366){
+						i = 7;
+					}
+					else if(point.getX()>366 && point.getX()<499){
+						i = 8;
+					}
+					else if(point.getX()>499 && point.getX()<632){
+						i = 9;
+					}
+					else if(point.getX()>632 && point.getX()<765){
+						i = 10;
+					}
+					else if(point.getX()>765 && point.getX()<898){
+						i = 11;
+					}
+				}
+				model.updateModel(i);
+			}
+
+			public void mouseReleased(MouseEvent e) {
+			}
+
+			public void mouseEntered(MouseEvent e) {
+			}
+
+			public void mouseExited(MouseEvent e) {
+			}
+		};
+		this.addMouseListener(listener);
 	}
 	
 	public void makeStartScreen(){
@@ -136,13 +204,14 @@ public class Board extends JFrame {
 		add(leftPit, BorderLayout.WEST);
 
 		//center panel of 12 small pits
-		JPanel smallPits = new JPanel();
-		smallPits.setLayout(new GridLayout(2,6));
+		JPanel smallPitsPanel = new JPanel();
+		smallPitsPanel.setLayout(new GridLayout(2,6));
 		for(int i=0; i<12; i++){
-			Pit p = new SmallPit(model.getNumOfStones(), color);
-			smallPits.add(p);
+			Pit p = new SmallPit(model.getSmallPits()[i], color);
+			smallPits.add(p);		//add pit to array
+			smallPitsPanel.add(p);	//add pit to panel
 		}
-		add(smallPits, BorderLayout.CENTER);
+		add(smallPitsPanel, BorderLayout.CENTER);
 		
 		//right pit
 		Pit rightPit = new LargePit(color);
@@ -156,22 +225,18 @@ public class Board extends JFrame {
 		color = c;
 	}
 	
-	public ArrayList<Pit> getPlayerAPits(){
-		return playerA_row;
-	}
-
-	public ArrayList<Pit> getPlayerBPits(){
-		return playerB_row;
+	public ArrayList<Pit> getSmallPits(){
+		return smallPits;
 	}
 	
 
-	public Pit getPlayerAMancala(){
-		return playerA_mancala;
+	public ArrayList<Pit> getLargePits(){
+		return largePits;
 	}
 
-
-	public Pit getPlayerBMancala(){
-		return playerB_mancala;
+	@Override
+	public void stateChanged(ChangeEvent e) {
+		drawBoard();
 	}
 	
 }

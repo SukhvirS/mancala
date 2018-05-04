@@ -3,6 +3,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
 
 public class SmallPit extends Pit{
 
@@ -12,7 +13,7 @@ public class SmallPit extends Pit{
 	public SmallPit(int n, Color c){
 		stoneCount = n;
 		color = c;
-		setPreferredSize(new Dimension(140, 140));
+		setPreferredSize(new Dimension(133, 175));
 	}
 	
 	public void paintComponent(Graphics g){
@@ -35,5 +36,6 @@ public class SmallPit extends Pit{
 			}
 		}
 	}
+	
 	
 }
