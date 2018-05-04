@@ -217,6 +217,19 @@ public class Board extends JFrame implements ChangeListener{
 		Pit rightPit = new LargePit(color);
 		add(rightPit, BorderLayout.EAST);
 		
+		//undoBtn
+		JButton undoBtn = new Jbutton();
+		undoBtn.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e) {
+				if(Board.this.model.getUndoBtnCounter() != 0)
+					Board.this.model.undo();
+					undoBtn.setText(Board.this.model.getUndoBtnCounter());
+			}
+		
+		});
+		add(undoBtn, BorderLayout.SOUTH);
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
 	}
