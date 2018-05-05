@@ -9,20 +9,23 @@ public class Model {
 	private int[] largePits;
 	private int numOfStones;
 	private ArrayList<ChangeListener> views;
-	int undoCounter;
+	/*int undoCounter;
 	boolean undoAllowed;
 	boolean freeTurn;
 	int [] data;
 	static int Player = 1;
 	int previousPlayer = 2;
+	*/
 	
 	public Model(){
 		smallPits = new int[12];
 		largePits = new int[2];
+		largePits[0] = 0;
+		largePits[1] = 0;
 		views = new ArrayList<ChangeListener>();
-		freeTurn = false;
-		undoAllowed = false;
-		undoCounter = 3;
+		//freeTurn = false;
+		//undoAllowed = false;
+		//undoCounter = 3;
 	}
 	
 	public int getNumOfStones(){
@@ -65,6 +68,7 @@ public class Model {
 		return largePits;
 	}
 	
+	/*
 	public int getUndoCounter(){
 		return undoCounter;
 	}
@@ -72,34 +76,45 @@ public class Model {
 	public int [] getData(){
 		return data;
 	}
+	*/
 	
 	//i is the small pit user clicked
 	public void updateModel(int i){
+		int startPit = i;
 		int count = smallPits[i];
 		smallPits[i] = 0;
-		while(count != 0){
+		while(count >  0){
 			//top row
 			if(i<=5){
-				if(i==0){
+				if(i==0 && startPit<6){
 					largePits[0]++;
 					i=6;
 					count--;
 				}
+				else if(i==0 && startPit>=6){
+					i=6;
+					smallPits[i]++;
+				}
 				else{
 					i--;
+					smallPits[i]++;
 				}
 			}
 			else{
-				if(i==11){
+				if(i==11 && startPit >= 6){
 					largePits[1]++;
 					i=5;
 					count--;
 				}
+				else if(i==11 && startPit < 6){
+					i=5;
+					smallPits[i]++;
+				}
 				else{
 					i++;
+					smallPits[i]++;
 				}
 			}
-			smallPits[i]++;
 			count--;
 		}
 		for(ChangeListener l: views){

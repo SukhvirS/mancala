@@ -25,14 +25,15 @@ public class Board extends JFrame implements ChangeListener{
 	private ArrayList<Pit> smallPits;
 	private ArrayList<Pit> largePits;
 	private Color color;
-	boolean stonesNumSelected;
-	boolean colorSelected;
+	private boolean player2turn;
+	private boolean stonesNumSelected;
+	private boolean colorSelected;
 	
 	protected Board(Model m){
 		model = m;
-
 		smallPits = new ArrayList<Pit>(12);
 		largePits = new ArrayList<Pit>(2);
+		player2turn = false;
 		
 		stonesNumSelected = false;
 		colorSelected = false;
@@ -48,49 +49,77 @@ public class Board extends JFrame implements ChangeListener{
 				Point2D point = new Point2D.Double(e.getX(), e.getY());
 				int i = 0;
 				if(point.getX()>100 && point.getX()<900){
-				//top half of small pits
-					if(point.getY() <= 175){
-						if(point.getX()>100 && point.getX()<233){
-							i = 0;
-						}
-						else if(point.getX()>233 && point.getX()<366){
-							i = 1;
-						}
-						else if(point.getX()>366 && point.getX()<499){
-							i = 2;
-						}
-						else if(point.getX()>499 && point.getX()<632){
-							i = 3;
-						}
-						else if(point.getX()>632 && point.getX()<765){
-							i = 4;
-						}
-						else if(point.getX()>765 && point.getX()<898){
-							i = 5;
-						}
-						model.updateModel(i);
+					if((!player2turn && point.getY() <= 175) || (player2turn && point.getY() > 175)){
+						JDialog wrongTurn = new JDialog();
+						wrongTurn.setTitle("Wrong row.");
+						wrongTurn.setModal(true);
+						wrongTurn.setSize(200, 50);
+						wrongTurn.setResizable(false);
+						wrongTurn.setLayout(new FlowLayout());
+						wrongTurn.add(new JLabel("Not Your Turn."));
+						wrongTurn.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+						wrongTurn.setVisible(true);
+						
 					}
-					//bottom half of small pits
-					if(point.getY() > 175 && point.getX()>100 && point.getX()<900){
-						if(point.getX()>100 && point.getX()<233){
-							i = 6;
+					else{
+						//top half of small pits
+						if(point.getY() <= 175){
+							if(point.getX()>100 && point.getX()<233){
+								i = 0;
+							}
+							else if(point.getX()>233 && point.getX()<366){
+								i = 1;
+							}
+							else if(point.getX()>366 && point.getX()<499){
+								i = 2;
+							}
+							else if(point.getX()>499 && point.getX()<632){
+								i = 3;
+							}
+							else if(point.getX()>632 && point.getX()<765){
+								i = 4;
+							}
+							else if(point.getX()>765 && point.getX()<898){
+								i = 5;
+							}
+							model.updateModel(i);
+							//swtich turns
+							if(player2turn){
+								player2turn = false;
+							}
+							else if(!player2turn){
+								player2turn = true;
+							}
 						}
-						else if(point.getX()>233 && point.getX()<366){
-							i = 7;
+						//bottom half of small pits
+						if(point.getY() > 175){
+							if(point.getX()>100 && point.getX()<233){
+								i = 6;
+							}
+							else if(point.getX()>233 && point.getX()<366){
+								i = 7;
+							}
+							else if(point.getX()>366 && point.getX()<499){
+								i = 8;
+							}
+							else if(point.getX()>499 && point.getX()<632){
+								i = 9;
+							}
+							else if(point.getX()>632 && point.getX()<765){
+								i = 10;
+							}
+							else if(point.getX()>765 && point.getX()<898){
+								i = 11;
+							}
+							model.updateModel(i);
+							//switch turns
+							if(player2turn){
+								player2turn = false;
+							}
+							else if(!player2turn){
+								player2turn = true;
+							}
 						}
-						else if(point.getX()>366 && point.getX()<499){
-							i = 8;
-						}
-						else if(point.getX()>499 && point.getX()<632){
-							i = 9;
-						}
-						else if(point.getX()>632 && point.getX()<765){
-							i = 10;
-						}
-						else if(point.getX()>765 && point.getX()<898){
-							i = 11;
-						}
-						model.updateModel(i);
 					}
 				}
 			}

@@ -23,14 +23,15 @@ public class LargePit extends Pit{
 		Ellipse2D pit = new Ellipse2D.Double(10, 5, 80, 275);
 		g2.draw(pit);
 		
-		int x = 30;
-		int y = 100;
+		int x = 35;
+		int y = 20;
 		for(int i=0; i<stoneCount; i++){
-			Ellipse2D stone = new Ellipse2D.Double(35, y, 10, 10);
+			Ellipse2D stone = new Ellipse2D.Double(x, y, 10, 10);
 			g2.fill(stone);
 			y += 15;
-			if(y > 200){
-				x = 45;
+			if(y > 250){
+				x = 50;
+				y = 20;
 			}
 		}
 	}
