@@ -1,5 +1,8 @@
+import java.awt.FlowLayout;
 import java.util.ArrayList;
 
+import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -14,6 +17,9 @@ public class Model {
 	private int[] largePits;
 	private int numOfStones;
 	private ArrayList<ChangeListener> views;
+	private boolean gameEnd;
+	private boolean player1won;
+	private boolean player2won;
 	/*int undoCounter;
 	boolean undoAllowed;
 	boolean freeTurn;
@@ -31,6 +37,9 @@ public class Model {
 		largePits[0] = 0;
 		largePits[1] = 0;
 		views = new ArrayList<ChangeListener>();
+		gameEnd = false;
+		player1won = false;
+		player2won = false;
 		//freeTurn = false;
 		//undoAllowed = false;
 		//undoCounter = 3;
@@ -110,46 +119,89 @@ public class Model {
 		int startPit = i;
 		int count = smallPits[i];
 		smallPits[i] = 0;
-		while(count >  0){
-			//top row
-			if(i<=5){
-				//if user reaches his own mancala on his turn, add a stone to his mancala
-				if(i==0 && startPit<6){
-					largePits[0]++;
-					i=6;
-					count--;
+		if(!gameEnd){
+			while(count >  0){
+				//top row
+				if(i<=5){
+					//if user reaches his own mancala on his turn, add a stone to his mancala
+					if(i==0 && startPit<6){
+						largePits[0]++;
+						i=6;
+						count--;
+					}
+					else if(i==0 && startPit>=6){
+						i=6;
+						smallPits[i]++;
+					}
+					else{
+						i--;
+						smallPits[i]++;
+					}
 				}
-				else if(i==0 && startPit>=6){
-					i=6;
-					smallPits[i]++;
-				}
+				//bottom row
 				else{
-					i--;
-					smallPits[i]++;
+					//if user reaches his own mancala on his turn, add a stone to his mancala
+					if(i==11 && startPit >= 6){
+						largePits[1]++;
+						i=5;
+						count--;
+					}
+					else if(i==11 && startPit < 6){
+						i=5;
+						smallPits[i]++;
+					}
+					else{
+						i++;
+						smallPits[i]++;
+					}
+				}
+				count--;
+				
+				//check if game has ended
+				if(smallPits[0] == 0 && smallPits[1] == 0 && smallPits[2] == 0 && smallPits[3] == 0 && smallPits[4] == 0 && smallPits[5] == 0){
+					gameEnd = true;
+					//add the leftover stones in player 1's small pits to his mancala 
+					for(int j=6; j<12; j++){
+						largePits[1] += smallPits[j];
+					}
+				}
+				if(smallPits[6] == 0 && smallPits[7] == 0 && smallPits[8] == 0 && smallPits[9] == 0 && smallPits[10] == 0 && smallPits[11] == 0){
+					gameEnd = true;
+					//add the leftover stones in player 2's small pits to his mancala 
+					for(int j=0; j<6; j++){
+						largePits[0] += smallPits[j];
+					}
 				}
 			}
-			//bottom row
-			else{
-				//if user reaches his own mancala on his turn, add a stone to his mancala
-				if(i==11 && startPit >= 6){
-					largePits[1]++;
-					i=5;
-					count--;
+			//notify all views of state change
+			for(ChangeListener l: views){
+				l.stateChanged(new ChangeEvent(this));
+			}
+			
+			if(gameEnd){
+				if(largePits[0] > largePits[1]){
+					JDialog player2won = new JDialog();
+					player2won.setTitle("Winner");
+					player2won.setModal(true);
+					player2won.setSize(200, 50);
+					player2won.setResizable(false);
+					player2won.setLayout(new FlowLayout());
+					player2won.add(new JLabel("Player 2 has won."));
+					player2won.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+					player2won.setVisible(true);
 				}
-				else if(i==11 && startPit < 6){
-					i=5;
-					smallPits[i]++;
-				}
-				else{
-					i++;
-					smallPits[i]++;
+				if(largePits[0] < largePits[1]){
+					JDialog player1won = new JDialog();
+					player1won.setTitle("Winner");
+					player1won.setModal(true);
+					player1won.setSize(200, 50);
+					player1won.setResizable(false);
+					player1won.setLayout(new FlowLayout());
+					player1won.add(new JLabel("Player 1 has won."));
+					player1won.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+					player1won.setVisible(true);
 				}
 			}
-			count--;
-		}
-		//notify all views of state change
-		for(ChangeListener l: views){
-			l.stateChanged(new ChangeEvent(this));
 		}
 	}
 	
