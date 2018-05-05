@@ -9,8 +9,8 @@ public class LargePit extends Pit{
 	private int stoneCount;
 	private Color color;
 	
-	public LargePit(Color c){
-		stoneCount = 0;
+	public LargePit(int n, Color c){
+		stoneCount = n;
 		color = c;
 		setPreferredSize(new Dimension(100,350));
 	}
@@ -23,11 +23,15 @@ public class LargePit extends Pit{
 		Ellipse2D pit = new Ellipse2D.Double(10, 5, 80, 275);
 		g2.draw(pit);
 		
-		int y = 45;
+		int x = 30;
+		int y = 100;
 		for(int i=0; i<stoneCount; i++){
-			Ellipse2D stone = new Ellipse2D.Double(40, y, 10, 10);
+			Ellipse2D stone = new Ellipse2D.Double(35, y, 10, 10);
 			g2.fill(stone);
 			y += 15;
+			if(y > 200){
+				x = 45;
+			}
 		}
 	}
 }

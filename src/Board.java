@@ -47,49 +47,52 @@ public class Board extends JFrame implements ChangeListener{
 			public void mousePressed(MouseEvent e) {
 				Point2D point = new Point2D.Double(e.getX(), e.getY());
 				int i = 0;
+				if(point.getX()>100 && point.getX()<900){
 				//top half of small pits
-				if(point.getY() <= 175){
-					if(point.getX()>100 && point.getX()<233){
-						i = 0;
+					if(point.getY() <= 175){
+						if(point.getX()>100 && point.getX()<233){
+							i = 0;
+						}
+						else if(point.getX()>233 && point.getX()<366){
+							i = 1;
+						}
+						else if(point.getX()>366 && point.getX()<499){
+							i = 2;
+						}
+						else if(point.getX()>499 && point.getX()<632){
+							i = 3;
+						}
+						else if(point.getX()>632 && point.getX()<765){
+							i = 4;
+						}
+						else if(point.getX()>765 && point.getX()<898){
+							i = 5;
+						}
+						model.updateModel(i);
 					}
-					else if(point.getX()>233 && point.getX()<366){
-						i = 1;
-					}
-					else if(point.getX()>366 && point.getX()<499){
-						i = 2;
-					}
-					else if(point.getX()>499 && point.getX()<632){
-						i = 3;
-					}
-					else if(point.getX()>632 && point.getX()<765){
-						i = 4;
-					}
-					else if(point.getX()>765 && point.getX()<898){
-						i = 5;
+					//bottom half of small pits
+					if(point.getY() > 175 && point.getX()>100 && point.getX()<900){
+						if(point.getX()>100 && point.getX()<233){
+							i = 6;
+						}
+						else if(point.getX()>233 && point.getX()<366){
+							i = 7;
+						}
+						else if(point.getX()>366 && point.getX()<499){
+							i = 8;
+						}
+						else if(point.getX()>499 && point.getX()<632){
+							i = 9;
+						}
+						else if(point.getX()>632 && point.getX()<765){
+							i = 10;
+						}
+						else if(point.getX()>765 && point.getX()<898){
+							i = 11;
+						}
+						model.updateModel(i);
 					}
 				}
-				//bottom half of small pits
-				if(point.getY() > 175){
-					if(point.getX()>100 && point.getX()<233){
-						i = 6;
-					}
-					else if(point.getX()>233 && point.getX()<366){
-						i = 7;
-					}
-					else if(point.getX()>366 && point.getX()<499){
-						i = 8;
-					}
-					else if(point.getX()>499 && point.getX()<632){
-						i = 9;
-					}
-					else if(point.getX()>632 && point.getX()<765){
-						i = 10;
-					}
-					else if(point.getX()>765 && point.getX()<898){
-						i = 11;
-					}
-				}
-				model.updateModel(i);
 			}
 
 			public void mouseReleased(MouseEvent e) {
@@ -200,7 +203,8 @@ public class Board extends JFrame implements ChangeListener{
 		setResizable(false);
 		
 		//left pit
-		Pit leftPit = new LargePit(color);
+		Pit leftPit = new LargePit(model.getLargePits()[0],color);
+		largePits.add(leftPit);
 		add(leftPit, BorderLayout.WEST);
 
 		//center panel of 12 small pits
@@ -214,11 +218,13 @@ public class Board extends JFrame implements ChangeListener{
 		add(smallPitsPanel, BorderLayout.CENTER);
 		
 		//right pit
-		Pit rightPit = new LargePit(color);
+		Pit rightPit = new LargePit(model.getLargePits()[1],color);
+		largePits.add(rightPit);
 		add(rightPit, BorderLayout.EAST);
 		
 		//undoBtn
-		JButton undoBtn = new Jbutton();
+		/*
+		JButton undoBtn = new JButton();
 		undoBtn.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e) {
@@ -229,6 +235,7 @@ public class Board extends JFrame implements ChangeListener{
 		
 		});
 		add(undoBtn, BorderLayout.SOUTH);
+		*/
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);

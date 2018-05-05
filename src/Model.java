@@ -36,6 +36,7 @@ public class Model {
 		}
 	}
 	
+	/*
 	public void undo(){
 		if(!undoAllowd){
 			JFrame frame = new JFrame();
@@ -54,7 +55,8 @@ public class Model {
 		undoAllowed = false;
 		updateModel();
 		
-	}
+	}*/
+	
 	public int[] getSmallPits(){
 		return smallPits;
 	}
@@ -63,9 +65,10 @@ public class Model {
 		return largePits;
 	}
 	
+	/*
 	punlic int getUndoCounter(){
 		return undoCounter;
-	}
+	}*/
 	
 	public int [] getData(){
 		return data;
@@ -73,7 +76,33 @@ public class Model {
 	
 	//i is the small pit user clicked
 	public void updateModel(int i){
+		int count = smallPits[i];
 		smallPits[i] = 0;
+		while(count != 0){
+			//top row
+			if(i<=5){
+				if(i==0){
+					largePits[0]++;
+					i=6;
+					count--;
+				}
+				else{
+					i--;
+				}
+			}
+			else{
+				if(i==11){
+					largePits[1]++;
+					i=5;
+					count--;
+				}
+				else{
+					i++;
+				}
+			}
+			smallPits[i]++;
+			count--;
+		}
 		for(ChangeListener l: views){
 			l.stateChanged(new ChangeEvent(this));
 		}

@@ -4,17 +4,17 @@ public interface BoardStyle
    /**
     * returns shape of pit
     */
-	public RectangularShape getPitShape();
+	//public RectangularShape getPitShape();
 	
 	/**
 	 * returns shape of mancala
 	 */
-	public RectangularShape getMancalaShape();
+	//public RectangularShape getMancalaShape();
 	
 	/**
 	 * returns shape of stone in correct position and number of stones
 	 */
-	public RectangularShape getStoneShape(int num, boolean isMancala);
+	//public RectangularShape getStoneShape(int num, boolean isMancala);
 	
 	/**
 	 * returns color of the board
