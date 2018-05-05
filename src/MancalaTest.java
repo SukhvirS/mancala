@@ -5,7 +5,7 @@ import java.awt.Color;
  * @author sukhvirsingh
  *
  */
-public class MancalaTester {
+public class MancalaTest {
 
 	public static void main(String[] args) {
 		Model m = new Model();
