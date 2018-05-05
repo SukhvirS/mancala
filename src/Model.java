@@ -9,11 +9,20 @@ public class Model {
 	private int[] largePits;
 	private int numOfStones;
 	private ArrayList<ChangeListener> views;
+	int undoCounter;
+	boolean undoAllowed;
+	boolean freeTurn;
+	int [] data;
+	static int Player = 1;
+	int previousPlayer = 2;
 	
 	public Model(){
 		smallPits = new int[12];
 		largePits = new int[2];
 		views = new ArrayList<ChangeListener>();
+		freeTurn = false;
+		undoAllowed = false;
+		undoCounter = 3;
 	}
 	
 	public int getNumOfStones(){
@@ -27,12 +36,39 @@ public class Model {
 		}
 	}
 	
+	public void undo(){
+		if(!undoAllowd){
+			JFrame frame = new JFrame();
+			JOptionPane.showMessageDialog(frame, "You are not allowed to undo!");
+		}
+		undo = true;
+		undoCounter--;
+	        if(freeTurn){
+			Player++;
+			Player = ((player % 2) ! = 0) ? 1 : 0;
+			freeTurn = false;
+		}
+		if(undoCounter ! = 0){
+			
+		}
+		undoAllowed = false;
+		updateModel();
+		
+	}
 	public int[] getSmallPits(){
 		return smallPits;
 	}
 	
 	public int[] getLargePits(){
 		return largePits;
+	}
+	
+	punlic int getUndoCounter(){
+		return undoCounter;
+	}
+	
+	public int [] getData(){
+		return data;
 	}
 	
 	//i is the small pit user clicked
