@@ -1,11 +1,13 @@
-import java.awt.FlowLayout;
 import java.util.ArrayList;
 
-import javax.swing.JDialog;
-import javax.swing.JLabel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+/**
+ * Holds all of the board data
+ * @author sukhvirsingh
+ *
+ */
 public class Model {
 
 	private int[] smallPits;
@@ -20,6 +22,9 @@ public class Model {
 	int previousPlayer = 2;
 	*/
 	
+	/**
+	 * Constructs a new model with 12 small pits and 2 large pits
+	 */
 	public Model(){
 		smallPits = new int[12];
 		largePits = new int[2];
@@ -31,10 +36,18 @@ public class Model {
 		//undoCounter = 3;
 	}
 	
+	/**
+	 * To get number of stones the user selected
+	 * @return
+	 */
 	public int getNumOfStones(){
 		return numOfStones;
 	}
 	
+	/**
+	 * To set number of stones in each pit
+	 * @param n
+	 */
 	public void setNumOfStones(int n){
 		numOfStones = n;
 		for(int i=0; i<12; i++){
@@ -63,10 +76,18 @@ public class Model {
 		
 	}*/
 	
+	/**
+	 * To get all the small pits
+	 * @return
+	 */
 	public int[] getSmallPits(){
 		return smallPits;
 	}
 	
+	/**
+	 * To get all the large pits
+	 * @return
+	 */
 	public int[] getLargePits(){
 		return largePits;
 	}
@@ -81,7 +102,10 @@ public class Model {
 	}
 	*/
 	
-	//i is the small pit user clicked
+	/**
+	 * Updates the model
+	 * @param i the small pit the user clicked on
+	 */
 	public void updateModel(int i){
 		int startPit = i;
 		int count = smallPits[i];
@@ -89,6 +113,7 @@ public class Model {
 		while(count >  0){
 			//top row
 			if(i<=5){
+				//if user reaches his own mancala on his turn, add a stone to his mancala
 				if(i==0 && startPit<6){
 					largePits[0]++;
 					i=6;
@@ -103,7 +128,9 @@ public class Model {
 					smallPits[i]++;
 				}
 			}
+			//bottom row
 			else{
+				//if user reaches his own mancala on his turn, add a stone to his mancala
 				if(i==11 && startPit >= 6){
 					largePits[1]++;
 					i=5;
@@ -118,28 +145,26 @@ public class Model {
 					smallPits[i]++;
 				}
 			}
-			if(count ==1 && smallPits[i]==0){
-				JDialog freeTurn = new JDialog();
-				freeTurn.setTitle("Free Turn.");
-				freeTurn.setModal(true);
-				freeTurn.setSize(200, 50);
-				freeTurn.setResizable(false);
-				freeTurn.setLayout(new FlowLayout());
-				freeTurn.add(new JLabel("You ended in an empty Mancala."));
-				freeTurn.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-				freeTurn.setVisible(true);
-			}
 			count--;
 		}
+		//notify all views of state change
 		for(ChangeListener l: views){
 			l.stateChanged(new ChangeEvent(this));
 		}
 	}
 	
+	/**
+	 * Attach a view to this model
+	 * @param c
+	 */
 	public void attachView(ChangeListener c){
 		views.add(c);
 	}
 	
+	/**
+	 * Get all views attached to this model
+	 * @return
+	 */
 	public ArrayList<ChangeListener> getViews(){
 		return views;
 	}

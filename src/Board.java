@@ -19,6 +19,11 @@ import javax.swing.JPanel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+/**
+ * The mancala board itself
+ * @author sukhvirsingh
+ *
+ */
 public class Board extends JFrame implements ChangeListener{
 
 	private Model model;
@@ -29,6 +34,10 @@ public class Board extends JFrame implements ChangeListener{
 	private boolean stonesNumSelected;
 	private boolean colorSelected;
 	
+	/**
+	 * Constructs a new board
+	 * @param m model to use
+	 */
 	protected Board(Model m){
 		model = m;
 		smallPits = new ArrayList<Pit>(12);
@@ -41,6 +50,7 @@ public class Board extends JFrame implements ChangeListener{
 		makeStartScreen();
 		drawBoard();
 		
+		//Mouse listener to detect which pit user clicks on
 		MouseListener listener = new MouseListener(){
 			public void mouseClicked(MouseEvent e) {
 			}
@@ -49,6 +59,7 @@ public class Board extends JFrame implements ChangeListener{
 				Point2D point = new Point2D.Double(e.getX(), e.getY());
 				int i = 0;
 				if(point.getX()>100 && point.getX()<900){
+					//if player picked one of other player's pits
 					if((!player2turn && point.getY() <= 175) || (player2turn && point.getY() > 175)){
 						JDialog wrongTurn = new JDialog();
 						wrongTurn.setTitle("Wrong row.");
@@ -83,6 +94,7 @@ public class Board extends JFrame implements ChangeListener{
 								i = 5;
 							}
 							model.updateModel(i);
+							
 							//swtich turns
 							if(player2turn){
 								player2turn = false;
@@ -112,6 +124,7 @@ public class Board extends JFrame implements ChangeListener{
 								i = 11;
 							}
 							model.updateModel(i);
+							
 							//switch turns
 							if(player2turn){
 								player2turn = false;
@@ -133,11 +146,14 @@ public class Board extends JFrame implements ChangeListener{
 			public void mouseExited(MouseEvent e) {
 			}
 		};
-		this.addMouseListener(listener);
+		this.addMouseListener(listener);	//add listener to this board
 	}
 	
+	/**
+	 * Makes the start screen that user selects 
+	 *  number of stones and board color from
+	 */
 	public void makeStartScreen(){
-		
 		//start screen
 		JDialog startScreen = new JDialog();		//JDialog waits for the user input
 		startScreen.setTitle("Mancala");
@@ -225,6 +241,9 @@ public class Board extends JFrame implements ChangeListener{
 		startScreen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 	
+	/**
+	 * Draws the board using the model
+	 */
 	public void drawBoard(){
 		
 		setSize(1000,350);
@@ -280,20 +299,33 @@ public class Board extends JFrame implements ChangeListener{
 		setVisible(true);
 	}
 	
+	/**
+	 * Sets the board color to c
+	 * @param c new board color
+	 */
 	public void setColor(Color c){
 		color = c;
 	}
 	
+	/**
+	 * To get the small pits
+	 * @return smallPits
+	 */
 	public ArrayList<Pit> getSmallPits(){
 		return smallPits;
 	}
 	
-
+	/**
+	 * To get the large pits
+	 * @return largePits
+	 */
 	public ArrayList<Pit> getLargePits(){
 		return largePits;
 	}
 
-	@Override
+	/**
+	 * Repaints the board upon a change in the model
+	 */
 	public void stateChanged(ChangeEvent e) {
 		drawBoard();
 	}

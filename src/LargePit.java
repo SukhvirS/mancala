@@ -4,17 +4,30 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
 
+/**
+ * The large (Mancala) pit
+ * @author sukhvirsingh
+ *
+ */
 public class LargePit extends Pit{
 
 	private int stoneCount;
 	private Color color;
 	
+	/**
+	 * Constructs a large (Mancala) pit
+	 * @param n number of stones in the pit
+	 * @param c color of pit
+	 */
 	public LargePit(int n, Color c){
 		stoneCount = n;
 		color = c;
 		setPreferredSize(new Dimension(100,350));
 	}
 	
+	/**
+	 * Draws the pit
+	 */
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;

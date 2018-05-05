@@ -5,17 +5,30 @@ import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 
+/**
+ * The small pit
+ * @author sukhvirsingh
+ *
+ */
 public class SmallPit extends Pit{
 
 	private int stoneCount;
 	private Color color;
 	
+	/**
+	 * Constructs a small pit with n stones and color c
+	 * @param n number of stones in this pit
+	 * @param c color of this pit
+	 */
 	public SmallPit(int n, Color c){
 		stoneCount = n;
 		color = c;
 		setPreferredSize(new Dimension(133, 175));
 	}
 	
+	/**
+	 * Draws the pit
+	 */
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
@@ -36,6 +49,5 @@ public class SmallPit extends Pit{
 			}
 		}
 	}
-	
 	
 }
