@@ -1,5 +1,8 @@
+import java.awt.FlowLayout;
 import java.util.ArrayList;
 
+import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -114,6 +117,17 @@ public class Model {
 					i++;
 					smallPits[i]++;
 				}
+			}
+			if(count ==1 && smallPits[i]==0){
+				JDialog freeTurn = new JDialog();
+				freeTurn.setTitle("Free Turn.");
+				freeTurn.setModal(true);
+				freeTurn.setSize(200, 50);
+				freeTurn.setResizable(false);
+				freeTurn.setLayout(new FlowLayout());
+				freeTurn.add(new JLabel("You ended in an empty Mancala."));
+				freeTurn.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+				freeTurn.setVisible(true);
 			}
 			count--;
 		}
