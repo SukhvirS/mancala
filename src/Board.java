@@ -223,19 +223,35 @@ public class Board extends JFrame implements ChangeListener{
 		add(rightPit, BorderLayout.EAST);
 		
 		//undoBtn
+<<<<<<< HEAD
 		/*
 		JButton undoBtn = new JButton();
+=======
+		JButton undoBtn = new JButton("Undo :" + this.model.getUndoCounter());
+		undoBtn.setPreferredSize(new Dimension(80, 35));
+	
+>>>>>>> b35db3cf56c633adbb9aa5e5d3eaa4029218bf54
 		undoBtn.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e) {
-				if(Board.this.model.getUndoBtnCounter() != 0)
+				if(Board.this.model.getUndoCounter() != 0) {
 					Board.this.model.undo();
-					undoBtn.setText(Board.this.model.getUndoBtnCounter());
+					
+						undoBtn.setText("Undo : " + Board.this.model.getUndoCounter());
+					}
 			}
 		
 		});
+<<<<<<< HEAD
 		add(undoBtn, BorderLayout.SOUTH);
 		*/
+=======
+
+		JPanel undoPanel = new JPanel();
+		undoPanel.add(undoBtn);
+		
+		add(undoPanel, BorderLayout.SOUTH);
+>>>>>>> b35db3cf56c633adbb9aa5e5d3eaa4029218bf54
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
