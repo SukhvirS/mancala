@@ -9,7 +9,7 @@ public class MancalaTest {
 
 	public static void main(String[] args) {
 		Model m = new Model();
-		Board b = new RedBoard(m);
+		Board b = new Board(m);
 		m.attachView(b);
 		
 	}
