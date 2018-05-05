@@ -44,7 +44,7 @@ public class Model {
 		}
 		undo = true;
 		undoCounter--;
-	        if(freeTurn){
+		if(freeTurn){
 			Player++;
 			Player = ((player % 2) ! = 0) ? 1 : 0;
 			freeTurn = false;
@@ -65,10 +65,9 @@ public class Model {
 		return largePits;
 	}
 	
-	/*
-	punlic int getUndoCounter(){
+	public int getUndoCounter(){
 		return undoCounter;
-	}*/
+	}
 	
 	public int [] getData(){
 		return data;
