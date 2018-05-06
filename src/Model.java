@@ -123,27 +123,41 @@ public class Model {
 	    undoAllowed = b;
     }
 
+    public void resetUndoCounter() {
+	    undoCounter = 3;
+    }
+
     /**
      * Saves board state in order to reaccess data
      * when trying to undo a move.
      */
 	public void saveBoardState(){
+        smallPitsSavedState = smallPits.clone();
+        largePitsSavedState = largePits.clone();
         for (int i = 0; i < 12; i++) {
+            System.out.println(smallPitsSavedState[i]);
+        }
+        System.out.println(largePitsSavedState[0]);
+        System.out.println(largePitsSavedState[1]);
+
+	    /*for (int i = 0; i < 12; i++) {
             smallPitsSavedState[i] = smallPits[i];
         }
         largePitsSavedState[0] = largePits[0];
-        largePitsSavedState[1] = largePits[1];
+        largePitsSavedState[1] = largePits[1];*/
     }
 
     /**
      * Returns board state to state before player made a move
      */
     public void revertToPreviousState() {
-        for (int i = 0; i < 12; i++) {
+        smallPits = smallPitsSavedState.clone();
+        largePits = largePitsSavedState.clone();
+        /*for (int i = 0; i < 12; i++) {
             smallPits[i] = smallPitsSavedState[i];
         }
         largePits[0] = largePitsSavedState[0];
-        largePits[1] = largePitsSavedState[1];
+        largePits[1] = largePitsSavedState[1];*/
     }
 
     /**
@@ -154,7 +168,7 @@ public class Model {
 	    if(undoAllowed && undoCounter > 0) {
 	        revertToPreviousState();
 	        undoCounter--;
-	        Board.changePlayer();
+	        //Board.changePlayer();
 	        setUndoAllowed(false);
 	        for(ChangeListener l : views) {
                 l.stateChanged(new ChangeEvent(this));
@@ -180,6 +194,10 @@ public class Model {
      * @param i the small pit the user clicked on
      */
     public void updateModel(int i){
+
+        // save current board configuration for later
+        saveBoardState();
+
         int startPit = i;
         int count = smallPits[i];
         smallPits[i] = 0;
@@ -273,9 +291,11 @@ public class Model {
                         largePits[0] += smallPits[j];
                     }
                 }
+
             }
 
-            saveBoardState();
+
+
 
             //notify all views of state change
             for(ChangeListener l: views){

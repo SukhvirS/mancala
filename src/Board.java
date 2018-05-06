@@ -73,6 +73,7 @@ public class Board extends JFrame implements ChangeListener{
                     }
                     else{
                         //top half of small pits
+                        //i.e. player 2's pits
                         if(point.getY() <= 175){
                             if(point.getX()>100 && point.getX()<233){
                                 i = 0;
@@ -105,6 +106,7 @@ public class Board extends JFrame implements ChangeListener{
                             }*/
                         }
                         //bottom half of small pits
+                        //i.e. player 1's pits
                         if(point.getY() > 175){
                             if(point.getX()>100 && point.getX()<233){
                                 i = 6;
@@ -249,7 +251,7 @@ public class Board extends JFrame implements ChangeListener{
      */
     public void drawBoard(){
 
-        setSize(1000,350);
+        setSize(1000,400);
         setLayout(new BorderLayout(10, 0));		//border layout with 10 horizontal padding between section
         setResizable(false);
 
@@ -292,8 +294,8 @@ public class Board extends JFrame implements ChangeListener{
         scorePanel.setLayout(new GridLayout(1, 3, 50, 0));
 
         int[] scores = model.getLargePits();
-        JLabel player2Score = new JLabel("Player 2 Score: " + scores[0]);
-        JLabel player1Score = new JLabel("Player 1 Score: " + scores[1]);
+        JLabel player2Score = new JLabel("                              Player 2 Score: " + scores[0]);
+        JLabel player1Score = new JLabel("               Player 1 Score: " + scores[1]);
         JButton undoButton = new JButton("Undos left: " + model.getUndoCounter());
         undoButton.addActionListener(new ActionListener() {
             @Override
@@ -301,7 +303,7 @@ public class Board extends JFrame implements ChangeListener{
                 model.undo();
             }
         });
-        undoButton.setEnabled(false);
+        //undoButton.setEnabled(false);
 
         scorePanel.add(player2Score);
         scorePanel.add(undoButton);
@@ -359,6 +361,7 @@ public class Board extends JFrame implements ChangeListener{
         } else {
             player2turn = true;
         }*/
+
     }
 
     /**
