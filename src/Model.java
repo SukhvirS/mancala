@@ -20,8 +20,11 @@ public class Model {
     private boolean gameEnd;
     private boolean player1won;
     private boolean player2won;
-	/*int undoCounter;
-	boolean undoAllowed;
+    private boolean undoAllowed;
+	private int undoCounter;
+	private int[] smallPitsSavedState;
+    private int[] largePitsSavedState;
+    /*
 	int [] data;
 	static int Player = 1;
 	int previousPlayer = 2;
@@ -39,8 +42,10 @@ public class Model {
         gameEnd = false;
         player1won = false;
         player2won = false;
-        //undoAllowed = false;
-        //undoCounter = 3;
+        undoAllowed = false;
+        undoCounter = 3;
+        smallPitsSavedState = new int[12];
+        largePitsSavedState = new int[2];
     }
 
     /**
@@ -64,7 +69,7 @@ public class Model {
 	
 	/*
 	public void undo(){
-		if(!undoAllowd){
+		if(!undoAllowed){
 			JFrame frame = new JFrame();
 			JOptionPane.showMessageDialog(frame, "You are not allowed to undo!");
 		}
@@ -98,16 +103,77 @@ public class Model {
     public int[] getLargePits(){
         return largePits;
     }
-	
-	/*
+
+
+    /**
+     * Get the number of undos left
+     * @return
+     */
 	public int getUndoCounter(){
 		return undoCounter;
 	}
-	
-	public int [] getData(){
-		return data;
-	}
-	*/
+
+
+	/**
+     * Allows the players to undo
+     * or restricts the ability to do so
+     *
+	 */
+	public void setUndoAllowed(boolean b) {
+	    undoAllowed = b;
+    }
+
+    /**
+     * Saves board state in order to reaccess data
+     * when trying to undo a move.
+     */
+	public void saveBoardState(){
+        for (int i = 0; i < 12; i++) {
+            smallPitsSavedState[i] = smallPits[i];
+        }
+        largePitsSavedState[0] = largePits[0];
+        largePitsSavedState[1] = largePits[1];
+    }
+
+    /**
+     * Returns board state to state before player made a move
+     */
+    public void revertToPreviousState() {
+        for (int i = 0; i < 12; i++) {
+            smallPits[i] = smallPitsSavedState[i];
+        }
+        largePits[0] = largePitsSavedState[0];
+        largePits[1] = largePitsSavedState[1];
+    }
+
+    /**
+     * Returns board to previous saved state
+     * precondition: undoCounter must be greater than 0 and undoAllowed must be true
+     */
+    public void undo() {
+	    if(undoAllowed && undoCounter > 0) {
+	        revertToPreviousState();
+	        undoCounter--;
+	        Board.changePlayer();
+	        setUndoAllowed(false);
+	        for(ChangeListener l : views) {
+                l.stateChanged(new ChangeEvent(this));
+            }
+        } else {
+            JDialog undoFailure = new JDialog();
+            undoFailure.setTitle("Undo Failure");
+            undoFailure.setModal(true);
+            undoFailure.setSize(300, 50);
+            undoFailure.setResizable(false);
+            undoFailure.setLayout(new FlowLayout());
+            if(!undoAllowed)
+                undoFailure.add(new JLabel(("You cannot undo until you have made a move!")));
+            else
+                undoFailure.add(new JLabel("No Undos left!"));
+            undoFailure.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+            undoFailure.setVisible(true);
+        }
+    }
 
     /**
      * Updates the model
@@ -129,7 +195,7 @@ public class Model {
 
                         // if last stone is in your Mancala, take a free turn
                         if(count == 0) {
-                            Board.setPlayer2turn();
+                            Board.changePlayer();
                         }
                         if(count > 0) {
                             smallPits[i]++;
@@ -144,7 +210,7 @@ public class Model {
                         i--;
                         // if last stone is put into an empty pit on your side,
                         // capture stone as well as opponent's stones in opposite pit
-                        if(count == 1 && smallPits[i] == 0) {
+                        if(count == 1 && smallPits[i] == 0 && smallPits[i+6] > 0) {
                             int capture = smallPits[i+6] + 1;
                             largePits[0] += capture;
                             smallPits[i+6] = 0;
@@ -164,7 +230,7 @@ public class Model {
 
                         // if last stone is in your Mancala, take a free turn
                         if(count == 0) {
-                            Board.setPlayer2turn();
+                            Board.changePlayer();
                         }
                         if(count > 0) {
                             smallPits[i]++;
@@ -179,7 +245,7 @@ public class Model {
                         i++;
                         // if last stone is put into an empty pit on your side,
                         // capture stone as well as opponent's stones in opposite pit
-                        if(count == 1 && smallPits[i] == 0) {
+                        if(count == 1 && smallPits[i] == 0 && smallPits[i-6] > 0) {
                             int capture = smallPits[i-6] + 1;
                             largePits[1] += capture;
                             smallPits[i-6] = 0;
@@ -208,6 +274,9 @@ public class Model {
                     }
                 }
             }
+
+            saveBoardState();
+
             //notify all views of state change
             for(ChangeListener l: views){
                 l.stateChanged(new ChangeEvent(this));

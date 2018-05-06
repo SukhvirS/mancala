@@ -10,18 +10,13 @@ import java.awt.event.MouseListener;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 /**
  * The mancala board itself
- * @author sukhvirsingh
+ * @author sukhvir singh & edrees osman
  *
  */
 public class Board extends JFrame implements ChangeListener{
@@ -30,6 +25,7 @@ public class Board extends JFrame implements ChangeListener{
     private ArrayList<Pit> smallPits;
     private ArrayList<Pit> largePits;
     private Color color;
+    //private static boolean player1turn;
     private static boolean player2turn;
     private boolean stonesNumSelected;
     private boolean colorSelected;
@@ -43,6 +39,7 @@ public class Board extends JFrame implements ChangeListener{
         model = m;
         smallPits = new ArrayList<Pit>(12);
         largePits = new ArrayList<Pit>(2);
+        //player1turn = true;
         player2turn = false;
 
         stonesNumSelected = false;
@@ -57,6 +54,7 @@ public class Board extends JFrame implements ChangeListener{
             }
 
             public void mousePressed(MouseEvent e) {
+                model.setUndoAllowed(true);
                 Point2D point = new Point2D.Double(e.getX(), e.getY());
                 int i = 0;
                 if(point.getX()>100 && point.getX()<900){
@@ -96,13 +94,15 @@ public class Board extends JFrame implements ChangeListener{
                             }
                             model.updateModel(i);
 
+                            changePlayer();
+
                             //swtich turns
-                            if(player2turn){
+                            /*if(player2turn){
                                 player2turn = false;
                             }
                             else if(!player2turn){
                                 player2turn = true;
-                            }
+                            }*/
                         }
                         //bottom half of small pits
                         if(point.getY() > 175){
@@ -126,13 +126,15 @@ public class Board extends JFrame implements ChangeListener{
                             }
                             model.updateModel(i);
 
+                            changePlayer();
+
                             //switch turns
-                            if(player2turn){
+                            /*if(player2turn){
                                 player2turn = false;
                             }
                             else if(!player2turn){
                                 player2turn = true;
-                            }
+                            }*/
                         }
                     }
                 }
@@ -270,7 +272,46 @@ public class Board extends JFrame implements ChangeListener{
         Pit rightPit = new LargePit(model.getLargePits()[1],color);
         largePits.add(rightPit);
         add(rightPit, BorderLayout.EAST);
-		
+
+
+        /*
+        JPanel turnPanel = new JPanel();
+        String playerTurn;
+        if(player1turn) {
+            playerTurn = "1";
+        } else {
+            playerTurn = "2";
+        }
+            (player2turn) ? "2" : "1";
+        JLabel turnLabel = new JLabel("Player " + playerTurn);
+        turnPanel.add(turnLabel);
+
+        add(turnPanel, BorderLayout.NORTH);*/
+
+        JPanel scorePanel = new JPanel();
+        scorePanel.setLayout(new GridLayout(1, 3, 50, 0));
+
+        int[] scores = model.getLargePits();
+        JLabel player2Score = new JLabel("Player 2 Score: " + scores[0]);
+        JLabel player1Score = new JLabel("Player 1 Score: " + scores[1]);
+        JButton undoButton = new JButton("Undos left: " + model.getUndoCounter());
+        undoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                model.undo();
+            }
+        });
+        undoButton.setEnabled(false);
+
+        scorePanel.add(player2Score);
+        scorePanel.add(undoButton);
+        scorePanel.add(player1Score);
+
+        add(scorePanel, BorderLayout.SOUTH);
+
+
+
+
 		/*
 		//undoBtn
 		JButton undoBtn = new JButton("Undo :" + this.model.getUndoCounter());
@@ -295,7 +336,7 @@ public class Board extends JFrame implements ChangeListener{
 		add(undoPanel, BorderLayout.SOUTH);
 		*/
 
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
     }
 
@@ -310,12 +351,14 @@ public class Board extends JFrame implements ChangeListener{
     /**
      * Changes the player turn
      */
-    public static void setPlayer2turn() {
-        if(player2turn) {
+    public static void changePlayer() {
+        //player1turn = !player1turn;
+        player2turn = !player2turn;
+        /*if(player2turn) {
             player2turn = false;
         } else {
             player2turn = true;
-        }
+        }*/
     }
 
     /**
